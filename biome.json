@@ -1,0 +1,21 @@
+{
+    "files": {
+        "ignore": [
+            ".cache/*",
+            "assets/vendor/*",
+            "assets/controllers.json",
+            "assets/codemirror/twig/*",
+            "composer.json",
+            "public/assets/*",
+            "public/bundles/*",
+            "var/cache/*",
+            "var/tailwind/*",
+            "vendor/*"
+        ]
+    },
+    "formatter": {
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 120
+    }
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -16,6 +18,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'user_id')]
     private UserId $id;
 
+    /**
+     * @var non-empty-string
+     */
     #[ORM\Column(length: 180)]
     private string $email;
 
@@ -31,9 +36,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
-    public static function create(string $email, string $password, array $roles = []): static
+    public function __construct()
     {
-        $user = new static();
+        $this->id = UserId::generate();
+    }
+
+    /**
+     * Creates a new user instance with the given email, password, and roles.
+     *
+     * @param non-empty-string $email
+     * @param non-empty-string $password
+     * @param list<string> $roles
+     */
+    public static function create(string $email, string $password, array $roles = []): User
+    {
+        $user = new self();
+
         $user->email = $email;
         $user->password = $password;
         $user->roles = $roles;
@@ -41,16 +59,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $user;
     }
 
-    public static function createAdmin(string $email, string $password): static
+    /**
+     * Creates a new user instance with the given email and password, assigning the 'ROLE_ADMIN' role.
+     *
+     * @param non-empty-string $email
+     * @param non-empty-string $password
+     */
+    public static function createAdmin(string $email, string $password): User
     {
         return static::create($email, $password, ['ROLE_ADMIN']);
     }
-
-    public function __construct()
-    {
-        $this->id = UserId::generate();
-    }
-
 
     public function getId(): UserId
     {
